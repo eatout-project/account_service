@@ -106,11 +106,11 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                                 response.json()
                                     .then(data => {
                                     console.log('data: ', data);
+                                    return res.status(200).json(data);
                                 })
                                     .catch(error => {
                                         console.log(error);
                                     })
-                                return res.status(200).json(response);
                             }).catch(error => {
                                 console.log(error);
                                 return res.status(400).json('Unable to register');
