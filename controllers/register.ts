@@ -12,7 +12,7 @@ export interface Registration {
 
 export interface Address {
     streetName: string,
-    streetNumber: number,
+    houseNumber: number,
     zipCode: number,
     city: string,
     floor?: number
@@ -70,11 +70,15 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
     console.log(req.body);
     const registration: Registration = req.body;
     if (!registration.email || !registration.name || !registration.password) {
+        console.log('Hej1');
+
         return res.status(400).json('empty fields');
     }
     if (registration.password.length > 20) {
-        res.status(400).json('password is too long. Maximum is 49 characters');
+        console.log('Hej2');
+        return res.status(400).json('password is too long. Maximum is 49 characters');
     }
+    console.log('Hej');
 
     db.transaction(trx => {
         trx.select('email').from('login').where('email', registration.email )
