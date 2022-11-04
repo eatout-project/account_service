@@ -67,23 +67,17 @@ export const fetch = (url: RequestInfo, init?: RequestInit) =>
     import('node-fetch').then(({ default: fetch }) => fetch(url, init));
 
 export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: any) => {
-    console.log(req.body);
     const registration: Registration = req.body;
     if (!registration.email || !registration.name || !registration.password) {
-        console.log('Hej1');
-
         return res.status(400).json('empty fields');
     }
     if (registration.password.length > 20) {
-        console.log('Hej2');
         return res.status(400).json('password is too long. Maximum is 49 characters');
     }
-    console.log('Hej');
 
     db.transaction(trx => {
         trx.select('email').from('login').where('email', registration.email )
             .then(email => {
-                console.log(email);
                 if (email.length) {
                     res.status(400).json('Email already exists')
                     return;
@@ -109,7 +103,6 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                             })).then((response) => {
                                 response.json()
                                     .then(data => {
-                                        console.log('data: ', data);
                                         trx.commit();
                                         return res.status(200).json(data);
                                 })

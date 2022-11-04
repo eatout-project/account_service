@@ -25,7 +25,6 @@ const db = knex({
 
 
 app.post('/', (req: Request, res: Response) => {
-    console.log(req.body);
     res.json({message: 'Express + TypeScript Server'});
 })
 
