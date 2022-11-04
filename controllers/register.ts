@@ -84,10 +84,10 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                 }
                 const hash = bcrypt.hashSync(registration.password, 10);
 
-                return trx.insert({hash: hash, email: registration.email})
+                trx.insert({hash: hash, email: registration.email})
                     .into('login')
                     .then(affectedRows => {
-                        return trx.select('id').from('login').where('email', registration.email).then(returnedId => {
+                        trx.select('id').from('login').where('email', registration.email).then(returnedId => {
                             const id: number = returnedId[0];
                             const finalRegistration: RegistrationDataObject = {
                                 id,
