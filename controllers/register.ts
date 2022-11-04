@@ -107,7 +107,7 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                                         return res.status(200).json(data);
                                 })
                                     .catch(error => {
-                                        console.log(error);
+                                        trx.rollback();
                                         return res.status(400).json('Unable to register');
                                     })
                             })
