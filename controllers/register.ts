@@ -12,7 +12,7 @@ export interface Registration {
 
 export interface Address {
     streetName: string,
-    streetNumber: number,
+    houseNumber: number,
     zipCode: number,
     city: string,
     floor?: number
@@ -67,29 +67,27 @@ export const fetch = (url: RequestInfo, init?: RequestInit) =>
     import('node-fetch').then(({ default: fetch }) => fetch(url, init));
 
 export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: any) => {
-    console.log(req.body);
     const registration: Registration = req.body;
     if (!registration.email || !registration.name || !registration.password) {
         return res.status(400).json('empty fields');
     }
     if (registration.password.length > 20) {
-        res.status(400).json('password is too long. Maximum is 49 characters');
+        return res.status(400).json('password is too long. Maximum is 49 characters');
     }
 
     db.transaction(trx => {
         trx.select('email').from('login').where('email', registration.email )
             .then(email => {
-                console.log(email);
                 if (email.length) {
                     res.status(400).json('Email already exists')
                     return;
                 }
                 const hash = bcrypt.hashSync(registration.password, 10);
 
-                return trx.insert({hash: hash, email: registration.email})
+                trx.insert({hash: hash, email: registration.email})
                     .into('login')
                     .then(affectedRows => {
-                        return trx.select('id').from('login').where('email', registration.email).then(returnedId => {
+                        trx.select('id').from('login').where('email', registration.email).then(returnedId => {
                             const id: number = returnedId[0];
                             const finalRegistration: RegistrationDataObject = {
                                 id,
@@ -105,22 +103,16 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                             })).then((response) => {
                                 response.json()
                                     .then(data => {
-                                    console.log('data: ', data);
-                                    return res.status(200).json(data);
+                                        trx.commit();
+                                        return res.status(200).json(data);
                                 })
                                     .catch(error => {
-                                        console.log(error);
+                                        trx.rollback();
+                                        return res.status(400).json('Unable to register');
                                     })
-                            }).catch(error => {
-                                console.log(error);
-                                return res.status(400).json('Unable to register');
                             })
                         })
                     })
-            }).then(trx.commit)
-            .catch(error => {
-                console.log(error);
-                trx.rollback;
             })
     })
 }
