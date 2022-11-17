@@ -26,7 +26,7 @@ export const handleLogin = (req: Request, res: Response, db: Knex, bcrypt: any) 
                             return res.status(200).json(data);
                         })
                         .catch(error => {
-                            return res.status(400).json('Unable to login');
+                            return res.status(400).json(false);
                         })
                 })
             } else {
