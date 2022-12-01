@@ -4,7 +4,7 @@ import {fetch} from "../utilities/dynamic-fetch";
 
 export interface Registration {
     email: string,
-    restaurantName: string,
+    name: string,
     password: string,
     description: string,
     address: Address
@@ -21,19 +21,19 @@ export interface Address {
 export interface RegistrationDataObject {
     id: number,
     email: string,
-    restaurantName: string,
+    name: string,
     description: string,
     address: Address
 }
 
 export interface RestaurantApiObjectResponse {
+    id: number;
     email: string;
-    restaurantName: string;
+    name: string;
     description: string;
     address: AddressApiObjectResponse;
     image?: string;
-    restaurantId?: number;
-    restaurantMenu?: RestaurantMenuApiObjectResponse;
+    menu?: RestaurantMenuApiObjectResponse;
 }
 
 export interface AddressApiObjectResponse {
@@ -65,7 +65,7 @@ export interface RestaurantMenuCategoryItemApiObjectResponse {
 
 export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: any) => {
     const registration: Registration = req.body;
-    if (!registration.email || !registration.restaurantName || !registration.password) {
+    if (!registration.email || !registration.name || !registration.password) {
         return res.status(400).json('empty fields');
     }
     if (registration.password.length > 20) {
@@ -88,7 +88,7 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                             const id: number = returnedId[0];
                             const finalRegistration: RegistrationDataObject = {
                                 id,
-                                restaurantName: registration.restaurantName,
+                                name: registration.name,
                                 email: registration.email,
                                 description: registration.description,
                                 address: registration.address
