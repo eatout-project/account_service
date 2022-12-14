@@ -68,7 +68,7 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
     if (!registration.email || !registration.name || !registration.password) {
         return res.status(400).json('empty fields');
     }
-    if (registration.password.length > 20) {
+    if (registration.password.length > 49) {
         return res.status(400).json('password is too long. Maximum is 49 characters');
     }
 
@@ -112,4 +112,8 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                     })
             })
     })
+        .catch(error => {
+            console.log(error);
+            return res.status(501).json('internal server error');
+        })
 }
