@@ -17,10 +17,10 @@ const port = process.env.PORT;
 const db = knex({
     client: 'mysql2',
     connection: {
-        host: 'localhost',
-        port:3309,
-        user: 'root',
-        database: 'db'
+        host: `${process.env.CUSTOMER_LOGIN_DB_HOST}`,
+        port: parseInt(`${process.env.CUSTOMER_LOGIN_DB_PORT}`),
+        user: `${process.env.CUSTOMER_LOGIN_DB_USER}`,
+        database: `${process.env.CUSTOMER_LOGIN_DB}`
     }
 });
 
