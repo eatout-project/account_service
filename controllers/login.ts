@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {Knex} from "knex";
 import {fetch} from "../utilities/dynamic-fetch";
 
-export const handleLogin = (req: Request, res: Response, db: Knex, bcrypt: any) => {
+export const handleLogin = (req: Request, res: Response, db: Knex, bcrypt: any, restaurantServiceUrl: string) => {
     const {email, password} = req.body;
 
     if (!email || !password) {
@@ -16,7 +16,7 @@ export const handleLogin = (req: Request, res: Response, db: Knex, bcrypt: any) 
                 const emailObject = {
                     email: email
                 };
-                fetch('http://localhost:5000/getRestaurant', ({
+                fetch(`${restaurantServiceUrl}/getRestaurant`, ({
                     method: 'post',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify(emailObject)

@@ -35,15 +35,14 @@ console.log(
 }
 )
 
-
 app.post('/', (req: Request, res: Response) => {
     res.json({message: 'Express + TypeScript Server'});
 })
 
 app.post("/register",  (req: Request, res: Response) => {handleRegister(req, res, db, bcrypt, restaurantServiceUrl)});
 
-app.post("/login",  (req: Request, res: Response) => {handleLogin(req, res, db, bcrypt)});
+app.post("/login",  (req: Request, res: Response) => {handleLogin(req, res, db, bcrypt, restaurantServiceUrl)});
 
 app.listen(port, () => {
-    console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+    console.log('⚡️[server]: Server is running');
 });

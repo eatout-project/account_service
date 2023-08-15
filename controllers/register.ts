@@ -93,7 +93,7 @@ export const handleRegister = (req: Request, res: Response, db: Knex, bcrypt: an
                                 description: registration.description,
                                 address: registration.address
                             }
-                            fetch(`http://${restaurantServiceUrl}:5000/createRestaurant`, ({
+                            fetch(`${restaurantServiceUrl}/createRestaurant`, ({
                                 method: 'post',
                                 headers: {'Content-Type': 'application/json'},
                                 body: JSON.stringify(finalRegistration)
