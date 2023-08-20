@@ -13,27 +13,18 @@ const app: Express = express();
 app.use(bodyParser.json());
 app.use(cors());
 const port = process.env.PORT;
-const restaurantServiceUrl = process.env.RESTAURANT_SERVICE_URL ? `${process.env.RESTAURANT_SERVICE_URL}` : 'localhost';
+const restaurantServiceUrl = process.env.RESTAURANT_SERVICE_URL ? `${process.env.RESTAURANT_SERVICE_URL}` : 'http://localhost:5000';
 console.log('restaurantServiceUrl: ', restaurantServiceUrl);
 
 const db = knex({
     client: 'mysql2',
     connection: {
         host: process.env.RESTAURANT_LOGIN_DB_HOST ? `${process.env.RESTAURANT_LOGIN_DB_HOST}` : `127.0.0.1`,
-        port: process.env.RESTAURANT_LOGIN_DB_PORT ? parseInt(`${process.env.RESTAURANT_LOGIN_DB_PORT}`) : 3309,
+        port: process.env.RESTAURANT_LOGIN_DB_PORT ? parseInt(`${process.env.RESTAURANT_LOGIN_DB_PORT}`) : 3306,
         user: process.env.RESTAURANT_LOGIN_DB_USER ? `${process.env.RESTAURANT_LOGIN_DB_USER}` : `root`,
         database: process.env.RESTAURANT_LOGIN_DB ? `${process.env.RESTAURANT_LOGIN_DB}` : 'db'
     }
 });
-
-console.log(
-    {
-    host: process.env.CUSTOMER_LOGIN_DB_HOST ? `${process.env.CUSTOMER_LOGIN_DB_HOST}` : `127.0.0.1`,
-        port: process.env.CUSTOMER_LOGIN_DB_PORT ? parseInt(`${process.env.CUSTOMER_LOGIN_DB_PORT}`) : 3309,
-        user: process.env.CUSTOMER_LOGIN_DB_USER ? `${process.env.CUSTOMER_LOGIN_DB_USER}` : `root`,
-        database: process.env.CUSTOMER_LOGIN_DB ? `${process.env.CUSTOMER_LOGIN_DB}` : 'db'
-}
-)
 
 app.post('/', (req: Request, res: Response) => {
     res.json({message: 'Express + TypeScript Server'});
